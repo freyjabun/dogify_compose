@@ -4,10 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -15,30 +14,33 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dogify.breedlist.view.BreedList
+import com.example.dogify.breedlist.viewmodel.BreedListVM
+import com.example.dogify.breedpics.view.BreedPic
 import com.example.dogify.breedpics.view.BreedPics
+import com.example.dogify.breedpics.viewmodel.BreedPicsVM
 import com.example.dogify.favorites.view.Favorites
 import com.example.dogify.nav.navItems
 import com.example.dogify.ui.theme.DogifyTheme
 
 class MainActivity : ComponentActivity() {
+    private val breedListVM by viewModels<BreedListVM>()
+    private val breedPicsVM by viewModels<BreedPicsVM>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DogifyTheme {
-
                 val navController = rememberNavController()
                 val configuration = LocalConfiguration.current
                 var selectedItemIndex by rememberSaveable {
@@ -90,11 +92,11 @@ class MainActivity : ComponentActivity() {
                     ){
                         composable<BreedList>
                         {
-                            BreedList(navController)
+                            BreedList(breedListVM, navController)
                         }
-                        composable<BreedPics>
+                        composable<BreedPic>
                         {
-                            BreedPics()
+
                         }
                         composable<Favorites>
                         {
@@ -104,21 +106,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DogifyTheme {
-        Greeting("Android")
     }
 }
