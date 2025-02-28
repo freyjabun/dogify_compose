@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.dogify.breedlist.view.BreedList
 import com.example.dogify.breedlist.viewmodel.BreedListVM
 import com.example.dogify.breedpics.view.BreedPic
@@ -33,8 +34,6 @@ import com.example.dogify.nav.navItems
 import com.example.dogify.ui.theme.DogifyTheme
 
 class MainActivity : ComponentActivity() {
-    private val breedListVM by viewModels<BreedListVM>()
-    private val breedPicsVM by viewModels<BreedPicsVM>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,11 +91,12 @@ class MainActivity : ComponentActivity() {
                     ){
                         composable<BreedList>
                         {
-                            BreedList(breedListVM, navController)
+                            BreedList(navController)
                         }
                         composable<BreedPic>
                         {
-
+                            val breedPic: BreedPic = it.toRoute<BreedPic>()
+                            BreedPics(breedPic)
                         }
                         composable<Favorites>
                         {

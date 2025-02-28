@@ -4,13 +4,20 @@ import com.example.dogify.provider.DataFetchService
 import com.example.dogify.provider.DogBreedService
 import retrofit2.create
 
-class BreedPictureRepository{
+class BreedPictureRepository {
 
     private val dogBreedImageService = DataFetchService.getInstance().create<DogBreedService>()
 
-    suspend fun getPicturesByBreed(breedName: String): BreedPicResponse{
-        return dogBreedImageService.getPicturesByBreed(
-            breedName
-        )
+    suspend fun getPicturesByBreed(breedName: String, subBreedName: String?): BreedPicResponse {
+        if (subBreedName.isNullOrEmpty()) {
+            return dogBreedImageService.getPicturesByBreed(
+                breedName
+            )
+        } else {
+            return dogBreedImageService.getPicturesBySubBreed(
+                breedName,
+                subBreedName
+            )
+        }
     }
 }

@@ -12,5 +12,6 @@ data class BreedPicResponse(
 data class BreedPicEntry(
     var liked: Boolean? = false,
     val breedName: String,
+    val subBreedName: String?,
     val breedImage: String
 )

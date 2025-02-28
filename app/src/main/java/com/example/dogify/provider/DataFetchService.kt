@@ -13,8 +13,18 @@ interface DogBreedService{
     @GET("breeds/list/all")
     suspend fun getAllBreeds(): BreedsResponse
 
-    @GET("breed/{breedName}/images/all")
-    suspend fun getPicturesByBreed(@Path("breedName") breedName: String): BreedPicResponse
+    @GET("breed/{breedName}/images")
+    suspend fun getPicturesByBreed(
+        @Path("breedName") breedName: String
+    ): BreedPicResponse
+
+    @GET("breed/{breedName}/{subBreedName}/images")
+    suspend fun getPicturesBySubBreed(
+        @Path("breedName") breedName: String,
+        @Path("subBreedName") subBreedName: String?
+    ): BreedPicResponse
+
+
 }
 
 object DataFetchService{

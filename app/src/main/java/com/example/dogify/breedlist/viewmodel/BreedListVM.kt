@@ -14,18 +14,30 @@ class BreedListVM : ViewModel() {
     private val _breedList = MutableStateFlow<List<BreedEntry>>(emptyList())
     val breedList = _breedList.asStateFlow()
 
-    fun loadAllBreeds()
-    {
+    fun loadAllBreeds() {
         viewModelScope.launch {
-            val response = breedRepo.getAllBreeds()
+            try {
+                val response = breedRepo.getAllBreeds()
 
-            val allBreeds = response.message.flatMap {
-                entry -> if (entry.value.isEmpty()) listOf(entry.key)
-                else entry.value.map { it + "-" + entry.key } }
+                val allBreeds = response.message.flatMap { entry ->
+                    if (entry.value.isEmpty()) listOf(
+                        BreedEntry(
+                            breedName = entry.key
+                        )
+                    )
+                    else entry.value.map {
+                        BreedEntry(
+                            breedName = entry.key,
+                            subBreedName = it
+                        )
+                    }
+                }
+                _breedList.value = allBreeds
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _breedList.value = emptyList()
+            }
 
-            println(allBreeds)
-            val breedEntries = allBreeds.map { breedName -> BreedEntry(breedName = breedName) }
-            _breedList.value = breedEntries
         }
     }
 }

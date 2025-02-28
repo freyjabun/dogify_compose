@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 data class BreedEntry(
     val breedName: String,
+    val subBreedName: String? = null,
     val breedImageUrl: String? = null
 )
 
