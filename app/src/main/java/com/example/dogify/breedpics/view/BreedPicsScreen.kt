@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -76,9 +78,10 @@ fun BreedPics(breedPic: BreedPic) {
 //        contentDescription = "Picture of dog by breed"
 //    )
     //Text(text = breedPics.toString())
-    LazyColumn(modifier = Modifier.fillMaxSize(),
+    LazyColumn(modifier = Modifier.fillMaxSize()
+        .padding(5.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+        verticalArrangement = Arrangement.spacedBy(10.dp)) {
         items(breedPics) { breedPicEntry ->
             BreedPicItem(
                 breedPicEntry = breedPicEntry
@@ -90,16 +93,16 @@ fun BreedPics(breedPic: BreedPic) {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun BreedPicItem(breedPicEntry: BreedPicEntry) {
-
     Card {
         Column(modifier = Modifier.padding(10.dp)
-            .background(Color.LightGray)){
+            .clip(RoundedCornerShape(10.dp)),
+            horizontalAlignment = Alignment.CenterHorizontally){
             GlideImage(modifier = Modifier.fillMaxSize()
                 .height(300.dp),
                 model = breedPicEntry.breedImage,
                 contentDescription = "Image of specific dog breed",
                 loading = placeholder(R.drawable.placeholder_dog),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.height(8 .dp))
             val breedLabel = if (breedPicEntry.subBreedName.isNullOrEmpty()){
@@ -107,7 +110,8 @@ fun BreedPicItem(breedPicEntry: BreedPicEntry) {
             } else {
                 breedPicEntry.breedName + " " + breedPicEntry.subBreedName
             }
-            Text(text = breedLabel)
+            Text(text = breedLabel,
+                textAlign = TextAlign.Center)
         }
 
     }
