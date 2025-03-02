@@ -20,6 +20,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -30,8 +32,10 @@ import com.example.dogify.breedpics.view.BreedPic
 import com.example.dogify.breedpics.view.BreedPics
 import com.example.dogify.breedpics.viewmodel.BreedPicsVM
 import com.example.dogify.favorites.view.Favorites
+import com.example.dogify.favorites.viewmodel.FavoritesVM
 import com.example.dogify.nav.navItems
 import com.example.dogify.ui.theme.DogifyTheme
+import com.example.dogify.utils.FavoritesDatabase
 
 class MainActivity : ComponentActivity() {
 
@@ -45,6 +49,8 @@ class MainActivity : ComponentActivity() {
                 var selectedItemIndex by rememberSaveable {
                     mutableIntStateOf(0)
                 }
+                val roomDb = FavoritesDatabase.getDatabase(LocalContext.current)
+
                 Scaffold(modifier = Modifier.fillMaxSize()
                     ,
                     bottomBar = {
@@ -96,11 +102,18 @@ class MainActivity : ComponentActivity() {
                         composable<BreedPic>
                         {
                             val breedPic: BreedPic = it.toRoute<BreedPic>()
-                            BreedPics(breedPic)
+                            val breedPicVM = viewModel<BreedPicsVM>{BreedPicsVM(
+                                breedPic = breedPic,
+                                db = roomDb)}
+
+                            BreedPics(breedPicVM)
                         }
                         composable<Favorites>
                         {
-                            Favorites()
+                            val favoriteVM = viewModel<FavoritesVM>{FavoritesVM(
+                                db = roomDb
+                            )}
+                            Favorites(favoriteVM)
                         }
                     }
                 }

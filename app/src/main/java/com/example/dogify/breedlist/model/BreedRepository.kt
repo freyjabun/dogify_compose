@@ -1,8 +1,8 @@
 // BreedRepository.kt
 package com.example.dogify.breedlist.model
 
-import com.example.dogify.provider.DataFetchService
-import com.example.dogify.provider.DogBreedService
+import com.example.dogify.utils.DataFetchService
+import com.example.dogify.utils.DogBreedService
 import retrofit2.create
 
 class BreedRepository {
@@ -11,5 +11,13 @@ class BreedRepository {
 
     suspend fun getAllBreeds(): BreedsResponse {
         return dogBreedService.getAllBreeds()
+    }
+
+    suspend fun getImageOfBreed(breedName: String, subBreedName: String?): BreedListPictureResponse {
+        return if (subBreedName.isNullOrEmpty()) {
+            dogBreedService.getRandomPictureOfBreed(breedName)
+        } else {
+            dogBreedService.getRandomPictureOfBreedWithSubBreed(breedName, subBreedName)
+        }
     }
 }

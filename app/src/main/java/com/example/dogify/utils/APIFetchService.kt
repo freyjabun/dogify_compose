@@ -1,8 +1,7 @@
-package com.example.dogify.provider
+package com.example.dogify.utils
+import com.example.dogify.breedlist.model.BreedListPictureResponse
 import com.example.dogify.breedlist.model.BreedsResponse
 import com.example.dogify.breedpics.model.BreedPicResponse
-import com.example.dogify.breedpics.view.BreedPics
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -24,7 +23,16 @@ interface DogBreedService{
         @Path("subBreedName") subBreedName: String?
     ): BreedPicResponse
 
+    @GET("breed/{breedName}/images/random")
+    suspend fun getRandomPictureOfBreed(
+        @Path("breedName") breedName: String,
+    ): BreedListPictureResponse
 
+    @GET("breed/{breedName}/{subBreedName}/images/random")
+    suspend fun getRandomPictureOfBreedWithSubBreed(
+        @Path("breedName") breedName: String,
+        @Path("subBreedName") subBreedName: String?
+    ): BreedListPictureResponse
 }
 
 object DataFetchService{

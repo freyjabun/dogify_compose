@@ -1,5 +1,7 @@
 package com.example.dogify.breedpics.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import coil3.Image
 import kotlinx.serialization.Serializable
 
@@ -10,7 +12,6 @@ data class BreedPicResponse(
 )
 
 data class BreedPicEntry(
-    var liked: Boolean? = false,
     val breedName: String,
     val subBreedName: String?,
     val breedImage: String

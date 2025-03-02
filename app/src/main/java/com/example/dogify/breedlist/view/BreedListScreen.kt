@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -24,6 +25,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.example.dogify.R
 import com.example.dogify.breedlist.model.BreedEntry
 import com.example.dogify.breedlist.viewmodel.BreedListVM
@@ -63,6 +67,7 @@ fun BreedList(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun DogBreedItem(breedEntry: BreedEntry, navController: NavController) {
     Column(
@@ -76,15 +81,14 @@ fun DogBreedItem(breedEntry: BreedEntry, navController: NavController) {
         },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(breedEntry.breedImageUrl)
-                .build(),
-            contentDescription = "Picture of dog",
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(R.drawable.placeholder_dog),
-            fallback = painterResource(R.drawable.placeholder_dog)
+        GlideImage(
+            modifier = Modifier.height(200.dp), model = breedEntry.breedImageUrl,
+            contentDescription = "Image of dog",
+            loading = placeholder(R.drawable.placeholder_dog),
+            failure = placeholder(R.drawable.placeholder_dog),
+            contentScale = ContentScale.Crop
         )
+
         val breedLabel = if (breedEntry.subBreedName.isNullOrEmpty()) {
             breedEntry.breedName
         } else {
