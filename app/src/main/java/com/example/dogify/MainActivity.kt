@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Badge
@@ -27,7 +26,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.dogify.breedlist.view.BreedList
-import com.example.dogify.breedlist.viewmodel.BreedListVM
 import com.example.dogify.breedpics.view.BreedPic
 import com.example.dogify.breedpics.view.BreedPics
 import com.example.dogify.breedpics.viewmodel.BreedPicsVM

@@ -2,9 +2,7 @@ package com.example.dogify.breedlist.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.util.copy
 import com.example.dogify.breedlist.model.BreedEntry
-import com.example.dogify.breedlist.model.BreedListPictureResponse
 import com.example.dogify.breedlist.model.BreedRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow

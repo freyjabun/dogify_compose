@@ -1,8 +1,5 @@
 package com.example.dogify.breedpics.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import coil3.Image
 import kotlinx.serialization.Serializable
 
 @Serializable
