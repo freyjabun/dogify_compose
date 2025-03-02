@@ -25,12 +25,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.dogify.breedlist.view.BreedList
-import com.example.dogify.breedpics.view.BreedPic
-import com.example.dogify.breedpics.view.BreedPics
-import com.example.dogify.breedpics.viewmodel.BreedPicsVM
+import com.example.dogify.breeds.view.BreedList
+import com.example.dogify.breeds.view.BreedPic
+import com.example.dogify.breeds.view.BreedPics
+import com.example.dogify.breeds.viewmodel.BreedImagesViewModel
 import com.example.dogify.favorites.view.Favorites
-import com.example.dogify.favorites.viewmodel.FavoritesVM
+import com.example.dogify.favorites.viewmodel.FavoritesViewModel
 import com.example.dogify.nav.navItems
 import com.example.dogify.ui.theme.DogifyTheme
 import com.example.dogify.utils.FavoritesDatabase
@@ -100,15 +100,17 @@ class MainActivity : ComponentActivity() {
                         composable<BreedPic>
                         {
                             val breedPic: BreedPic = it.toRoute<BreedPic>()
-                            val breedPicVM = viewModel<BreedPicsVM>{BreedPicsVM(
+                            val breedPicVM = viewModel<BreedImagesViewModel>{
+                                BreedImagesViewModel(
                                 breedPic = breedPic,
-                                db = roomDb)}
+                                db = roomDb)
+                            }
 
                             BreedPics(breedPicVM)
                         }
                         composable<Favorites>
                         {
-                            val favoriteVM = viewModel<FavoritesVM>{FavoritesVM(
+                            val favoriteVM = viewModel<FavoritesViewModel>{FavoritesViewModel(
                                 db = roomDb
                             )}
                             Favorites(favoriteVM)

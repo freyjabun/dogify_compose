@@ -24,25 +24,26 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.example.dogify.R
-import com.example.dogify.favorites.model.FavoritesModel
-import com.example.dogify.favorites.viewmodel.FavoritesVM
+import com.example.dogify.breeds.model.Breed
+import com.example.dogify.favorites.viewmodel.FavoritesViewModel
 import kotlinx.serialization.Serializable
 
 @Composable
-fun Favorites(vm: FavoritesVM) {
+fun Favorites(vm: FavoritesViewModel) {
 
-//    val onClickFavorite: (BreedPicEntry) -> Unit = {
-//        vm.toggleFavorite(it)
-//    }
+    val onClickFavorite: (Breed) -> Unit = {
+        vm.toggleFavorite(it)
+    }
 
     val favorites by vm.favFlow.collectAsState()
 
     LazyColumn (modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)){
-        items(favorites) { favoriteItem ->
+        items(favorites) { breedItem ->
             FavoritesItem(
-                favorite = favoriteItem
+                breed = breedItem,
+                onClickFavorite
             )
         }
     }
@@ -51,15 +52,18 @@ fun Favorites(vm: FavoritesVM) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun FavoritesItem(favorite: FavoritesModel,) {
-    Card {
+fun FavoritesItem(breed: Breed,
+                  onClickFavorite: (Breed) -> Unit) {
+    Card (onClick = {
+        onClickFavorite(breed)
+    }){
         Column (modifier = Modifier.padding(10.dp)){
             GlideImage(
                 modifier = Modifier
                     .fillMaxSize()
                     .height(300.dp)
                     .clip(RoundedCornerShape(10.dp)),
-                model = favorite.breedImage,
+                model = breed.breedImageUrl,
                 contentDescription = "Favorite Image",
                 loading = placeholder(R.drawable.placeholder_dog),
                 failure = placeholder(R.drawable.placeholder_dog),
@@ -67,10 +71,10 @@ fun FavoritesItem(favorite: FavoritesModel,) {
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            val breedLabel = if (favorite.subBreedName.isNullOrEmpty()){
-                favorite.breedName
+            val breedLabel = if (breed.subBreedName.isNullOrEmpty()){
+                breed.breedName
             } else {
-                favorite.breedName + " " + favorite.subBreedName
+                breed.breedName + " " + breed.subBreedName
             }
             Text(text = breedLabel,
                 fontSize = 25.sp)

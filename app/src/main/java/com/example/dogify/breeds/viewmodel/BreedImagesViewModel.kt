@@ -1,21 +1,20 @@
-package com.example.dogify.breedpics.viewmodel
+package com.example.dogify.breeds.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dogify.breedpics.model.BreedPicEntry
-import com.example.dogify.breedpics.model.BreedPictureRepository
-import com.example.dogify.breedpics.view.BreedPic
-import com.example.dogify.favorites.model.FavoritesModel
+import com.example.dogify.breeds.model.Breed
+import com.example.dogify.breeds.repo.BreedPictureRepository
+import com.example.dogify.breeds.view.BreedPic
 import com.example.dogify.utils.FavoritesDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class BreedPicsVM(val breedPic: BreedPic, db: FavoritesDatabase) : ViewModel() {
+class BreedImagesViewModel(val breedPic: BreedPic, db: FavoritesDatabase) : ViewModel() {
 
     private val repo = BreedPictureRepository(db.dao)
 
-    private val _breedPics = MutableStateFlow<List<BreedPicEntry>>(emptyList())
+    private val _breedPics = MutableStateFlow<List<Breed>>(emptyList())
     val breedPics = _breedPics.asStateFlow()
 
 
@@ -36,9 +35,9 @@ class BreedPicsVM(val breedPic: BreedPic, db: FavoritesDatabase) : ViewModel() {
         viewModelScope.launch {
         val response = repo.getPicturesByBreed(breedPic.breedName, breedPic.subBreedName)
         val breedPicEntries = response.message.map {
-                imageUrl -> BreedPicEntry(
+                imageUrl -> Breed(
             breedName = breedPic.breedName,
-            breedImage = imageUrl,
+            breedImageUrl = imageUrl,
             subBreedName = breedPic.subBreedName
             )
         }
@@ -47,23 +46,23 @@ class BreedPicsVM(val breedPic: BreedPic, db: FavoritesDatabase) : ViewModel() {
         }
     }
 
-    fun toggleFavorite(breedPic: BreedPicEntry){
+    fun toggleFavorite(breedPic: Breed){
         viewModelScope.launch {
-            val exists = repo.isImageInFavorites(breedPic.breedImage)
+            val exists = repo.isImageInFavorites(breedPic.breedImageUrl)
             if (!exists){
-                repo.addToFavorites(FavoritesModel(
-                    breedImage = breedPic.breedImage,
+                repo.addToFavorites(Breed(
+                    breedImageUrl = breedPic.breedImageUrl,
                     subBreedName = breedPic.subBreedName,
                     breedName = breedPic.breedName
                 ))
-                println("Added ${breedPic.breedImage} to Favorites")
+                println("Added ${breedPic.breedImageUrl} to Favorites")
             } else {
-                repo.removeFromFavorites(FavoritesModel(
-                    breedImage = breedPic.breedImage,
+                repo.removeFromFavorites(Breed(
+                    breedImageUrl = breedPic. breedImageUrl,
                     breedName = breedPic.breedName,
                     subBreedName = breedPic.subBreedName
                 ))
-                println("Removed ${breedPic.breedImage} from Favorites")
+                println("Removed ${breedPic.breedImageUrl} from Favorites")
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.dogify.breedpics.view
+package com.example.dogify.breeds.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,13 +28,13 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.example.dogify.R
-import com.example.dogify.breedpics.model.BreedPicEntry
-import com.example.dogify.breedpics.viewmodel.BreedPicsVM
+import com.example.dogify.breeds.model.Breed
+import com.example.dogify.breeds.viewmodel.BreedImagesViewModel
 import kotlinx.serialization.Serializable
 
 
 @Composable
-fun BreedPics(vm: BreedPicsVM) {
+fun BreedPics(vm: BreedImagesViewModel) {
 
     val breedPics by vm.breedPics.collectAsState()
 
@@ -42,7 +42,7 @@ fun BreedPics(vm: BreedPicsVM) {
         vm.getBreedPics()
     }
 
-    val onClickFavorite: (BreedPicEntry) -> Unit = {
+    val onClickFavorite: (Breed) -> Unit = {
         vm.toggleFavorite(it)
     }
 
@@ -53,9 +53,9 @@ fun BreedPics(vm: BreedPicsVM) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(breedPics) { breedPicEntry ->
+        items(breedPics) { item ->
             BreedPicItem(
-                breedPicEntry = breedPicEntry,
+                breed = item,
                 onClickFavorite
             )
         }
@@ -65,11 +65,11 @@ fun BreedPics(vm: BreedPicsVM) {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun BreedPicItem(
-    breedPicEntry: BreedPicEntry,
-    onClickFavorite: (BreedPicEntry) -> Unit
+    breed: Breed,
+    onClickFavorite: (Breed) -> Unit
 ) {
     Card(onClick = {
-        onClickFavorite(breedPicEntry)
+        onClickFavorite(breed)
     }) {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -81,7 +81,7 @@ fun BreedPicItem(
                         .fillMaxSize()
                         .clip(RoundedCornerShape(10.dp))
                         .height(300.dp),
-                    model = breedPicEntry.breedImage,
+                    model = breed.breedImageUrl,
                     contentDescription = "Image of specific dog breed",
                     loading = placeholder(R.drawable.placeholder_dog),
                     failure = placeholder(R.drawable.placeholder_dog),
@@ -89,7 +89,7 @@ fun BreedPicItem(
                 )
 
                 FloatingActionButton(onClick = {
-                    onClickFavorite(breedPicEntry)
+                    onClickFavorite(breed)
                 }) {
                     Icon(imageVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = "")
@@ -98,10 +98,10 @@ fun BreedPicItem(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            val breedLabel = if (breedPicEntry.subBreedName.isNullOrEmpty()) {
-                breedPicEntry.breedName
+            val breedLabel = if (breed.subBreedName.isNullOrEmpty()) {
+                breed.breedName
             } else {
-                breedPicEntry.breedName + " " + breedPicEntry.subBreedName
+                breed.breedName + " " + breed.subBreedName
             }
 //            Row (horizontalArrangement = Arrangement.spacedBy(40.dp)
 //            , verticalAlignment = Alignment.CenterVertically){

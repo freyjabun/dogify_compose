@@ -1,4 +1,4 @@
-package com.example.dogify.breedlist.view
+package com.example.dogify.breeds.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,15 +25,14 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.example.dogify.R
-import com.example.dogify.breedlist.model.BreedEntry
-import com.example.dogify.breedlist.viewmodel.BreedListVM
-import com.example.dogify.breedpics.view.BreedPic
+import com.example.dogify.breeds.model.Breed
+import com.example.dogify.breeds.viewmodel.BreedListViewModel
 import kotlinx.serialization.Serializable
 
 @Composable
 fun BreedList(navController: NavController) {
 
-    val viewModel = viewModel<BreedListVM>()
+    val viewModel = viewModel<BreedListViewModel>()
 
     LaunchedEffect(Unit) {
         viewModel.loadAllBreeds()
@@ -65,30 +64,30 @@ fun BreedList(navController: NavController) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun DogBreedItem(breedEntry: BreedEntry, navController: NavController) {
+fun DogBreedItem(breed: Breed, navController: NavController) {
     Column(
         modifier = Modifier.clickable {
             navController.navigate(
                 BreedPic(
-                    breedName = breedEntry.breedName,
-                    subBreedName = breedEntry.subBreedName
+                    breedName = breed.breedName,
+                    subBreedName = breed.subBreedName
                 )
             )
         },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         GlideImage(
-            modifier = Modifier.height(200.dp), model = breedEntry.breedImageUrl,
+            modifier = Modifier.height(200.dp), model = breed.breedImageUrl,
             contentDescription = "Image of dog",
             loading = placeholder(R.drawable.placeholder_dog),
             failure = placeholder(R.drawable.placeholder_dog),
             contentScale = ContentScale.Crop
         )
 
-        val breedLabel = if (breedEntry.subBreedName.isNullOrEmpty()) {
-            breedEntry.breedName
+        val breedLabel = if (breed.subBreedName.isNullOrEmpty()) {
+            breed.breedName
         } else {
-            breedEntry.breedName + " " + breedEntry.subBreedName
+            breed.breedName + " " + breed.subBreedName
         }
         Text(
             text = breedLabel,

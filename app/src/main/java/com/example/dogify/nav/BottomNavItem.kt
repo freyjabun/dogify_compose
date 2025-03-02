@@ -6,7 +6,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.dogify.breedlist.view.BreedList
+import com.example.dogify.breeds.view.BreedList
 import com.example.dogify.favorites.view.Favorites
 
 data class BottomNavigationItem<T : Any>(

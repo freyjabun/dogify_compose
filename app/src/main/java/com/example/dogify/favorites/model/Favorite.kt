@@ -2,12 +2,7 @@ package com.example.dogify.favorites.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
-data class FavoritesModel(
-    val breedName: String,
-    val subBreedName: String? = null,
-    val breedImage: String
-)
+import com.example.dogify.breeds.model.Breed
 
 @Entity
 data class Favorite(
@@ -15,15 +10,14 @@ data class Favorite(
     val fullBreedName: String
 )
 
-
-fun Favorite.toModel(): FavoritesModel{
+fun Favorite.toModel(): Breed{
     val parts = fullBreedName.split("-", limit = 2)
     val breedName = parts[0]
     val subBreedName = parts[1]
 
-    return FavoritesModel(
+    return Breed(
         breedName = breedName,
         subBreedName = subBreedName,
-        breedImage = breedImage
+        breedImageUrl = breedImage
     )
 }

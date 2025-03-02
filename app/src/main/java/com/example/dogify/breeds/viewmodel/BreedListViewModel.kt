@@ -1,18 +1,18 @@
-package com.example.dogify.breedlist.viewmodel
+package com.example.dogify.breeds.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dogify.breedlist.model.BreedEntry
-import com.example.dogify.breedlist.model.BreedRepository
+import com.example.dogify.breeds.model.Breed
+import com.example.dogify.breeds.repo.BreedRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class BreedListVM : ViewModel() {
+class BreedListViewModel : ViewModel() {
     private val breedRepo = BreedRepository()
 
-    private val _breedList = MutableStateFlow<List<BreedEntry>>(emptyList())
+    private val _breedList = MutableStateFlow<List<Breed>>(emptyList())
     val breedList = _breedList.asStateFlow()
 
     fun loadAllBreeds() {
@@ -22,12 +22,12 @@ class BreedListVM : ViewModel() {
 
                 val allBreeds = response.message.flatMap { entry ->
                     if (entry.value.isEmpty()) listOf(
-                        BreedEntry(
+                        Breed(
                             breedName = entry.key
                         )
                     )
                     else entry.value.map {
-                        BreedEntry(
+                        Breed(
                             breedName = entry.key,
                             subBreedName = it
                         )
@@ -42,7 +42,7 @@ class BreedListVM : ViewModel() {
         }
     }
 
-    private fun addImagesAsync(breeds: List<BreedEntry>) {
+    private fun addImagesAsync(breeds: List<Breed>) {
         viewModelScope.launch {
             breeds.forEach { breedEntry ->
                 val imageUrl = async {
