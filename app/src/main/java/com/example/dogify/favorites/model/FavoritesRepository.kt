@@ -6,11 +6,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 
-class FavoritesRepository(private val dao: FavoritesDAO)  {
+class FavoritesRepository(private val dao: FavoritesDAO) {
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getFavorites() : Flow<List<Breed>>{
+    fun getFavorites(): Flow<List<Breed>> {
         val favorites = dao.getFavorites().mapLatest { it ->
             it.map { it.toModel() }
         }
@@ -28,15 +28,6 @@ class FavoritesRepository(private val dao: FavoritesDAO)  {
             }
         }
         return breeds
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun getFavoritesByBreed(breed: Breed) : Flow<List<Breed>>{
-        val mappedBreed = breed.toFullBreedString()
-        val favoritesByBreed = dao.getFavoritesByBreed(mappedBreed).mapLatest {  it ->
-            it.map { it.toModel() }
-        }
-        return favoritesByBreed
     }
 
     suspend fun isImageInFavorites(breedImage: String): Boolean {

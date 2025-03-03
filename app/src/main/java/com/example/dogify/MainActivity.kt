@@ -25,7 +25,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.dogify.breeds.model.Breed
 import com.example.dogify.breeds.view.BreedList
 import com.example.dogify.breeds.view.BreedPic
 import com.example.dogify.breeds.view.BreedPics

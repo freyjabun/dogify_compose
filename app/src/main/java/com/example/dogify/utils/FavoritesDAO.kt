@@ -22,7 +22,4 @@ interface FavoritesDAO {
 
     @Query("SELECT DISTINCT fullBreedName from favorite ORDER BY fullBreedName ASC")
     fun getAllBreedNamesInFavorites(): Flow<List<String>>
-
-    @Query("SELECT * FROM favorite WHERE fullBreedName = :breedName")
-    fun getFavoritesByBreed(breedName:String): Flow<List<Favorite>>
 }

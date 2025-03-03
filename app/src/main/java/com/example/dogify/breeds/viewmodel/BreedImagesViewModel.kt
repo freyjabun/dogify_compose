@@ -17,20 +17,6 @@ class BreedImagesViewModel(val breedPic: BreedPic, db: FavoritesDatabase) : View
     private val _breedPics = MutableStateFlow<List<Breed>>(emptyList())
     val breedPics = _breedPics.asStateFlow()
 
-
-
-//    val temp = flow<List<BreedPicEntry>> {
-//        val response = breedPicRepo.getPicturesByBreed(breedName)
-//        val breedPicEntries = response.message.map {
-//                imageUrl -> BreedPicEntry(
-//            breedName = breedName,
-//            breedImage = imageUrl
-//            )
-//        }
-//        println("Entries for breedPics: $breedPicEntries")
-//        breedPicEntries
-//    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-
     fun getBreedPics(){
         viewModelScope.launch {
         val response = repo.getPicturesByBreed(breedPic.breedName, breedPic.subBreedName)

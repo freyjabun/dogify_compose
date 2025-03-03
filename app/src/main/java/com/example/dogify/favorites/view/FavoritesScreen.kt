@@ -1,6 +1,5 @@
 package com.example.dogify.favorites.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,8 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,7 +31,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,16 +56,15 @@ fun Favorites(vm: FavoritesViewModel) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopStart
-    ){
-        Column (
+    ) {
+        Column(
             modifier = Modifier.fillMaxSize()
-        ){
-            BreedDropdown(breeds = breedsInFavorites, onBreedSelected = {breed ->
+        ) {
+            BreedDropdown(breeds = breedsInFavorites, onBreedSelected = { breed ->
                 vm.selectBreed(breed)
             }, onClearFilter = {
                 vm.clearBreedFilter()
             })
-            Spacer(modifier = Modifier.height(16.dp))
 
             if (favorites.isEmpty()) {
                 Column(
@@ -83,8 +78,7 @@ fun Favorites(vm: FavoritesViewModel) {
                         textAlign = TextAlign.Center,
                     )
                 }
-            }
-            else {
+            } else {
                 LazyColumn(
                     modifier = Modifier,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -98,9 +92,7 @@ fun Favorites(vm: FavoritesViewModel) {
                     }
                 }
             }
-
         }
-
     }
 }
 
@@ -156,7 +148,11 @@ fun FavoritesItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BreedDropdown(breeds: List<Breed>, onBreedSelected: (Breed) -> Unit, onClearFilter: () -> Unit) {
+fun BreedDropdown(
+    breeds: List<Breed>,
+    onBreedSelected: (Breed) -> Unit,
+    onClearFilter: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
     var selectedBreed by remember { mutableStateOf<Breed?>(null) }
 
@@ -177,7 +173,9 @@ fun BreedDropdown(breeds: List<Breed>, onBreedSelected: (Breed) -> Unit, onClear
                     contentDescription = "Dropdown Icon"
                 )
             },
-            modifier = Modifier.fillMaxWidth().menuAnchor()
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor()
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -192,7 +190,7 @@ fun BreedDropdown(breeds: List<Breed>, onBreedSelected: (Breed) -> Unit, onClear
                 text = { Text(text = "Show all favorites") }
             )
             breeds.forEach { breed ->
-                val breedLabel = if (breed.subBreedName.isNullOrEmpty()){
+                val breedLabel = if (breed.subBreedName.isNullOrEmpty()) {
                     breed.breedName
                 } else {
                     breed.breedName + " " + breed.subBreedName
@@ -207,5 +205,6 @@ fun BreedDropdown(breeds: List<Breed>, onBreedSelected: (Breed) -> Unit, onClear
         }
     }
 }
+
 @Serializable
 object Favorites

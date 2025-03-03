@@ -3,7 +3,6 @@ package com.example.dogify.breeds.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -68,9 +67,7 @@ fun BreedPicItem(
     breed: Breed,
     onClickFavorite: (Breed) -> Unit
 ) {
-    Card(onClick = {
-        onClickFavorite(breed)
-    }) {
+    Card {
         Column(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
