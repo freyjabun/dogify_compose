@@ -3,7 +3,7 @@ package com.example.dogify.breeds.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dogify.breeds.model.Breed
-import com.example.dogify.breeds.repo.BreedPictureRepository
+import com.example.dogify.breeds.repo.BreedImageRepository
 import com.example.dogify.breeds.view.BreedPic
 import com.example.dogify.utils.FavoritesDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +12,13 @@ import kotlinx.coroutines.launch
 
 class BreedImagesViewModel(val breedPic: BreedPic, db: FavoritesDatabase) : ViewModel() {
 
-    private val repo = BreedPictureRepository(db.dao)
+    private val repo = BreedImageRepository(db.dao)
 
     private val _breedPics = MutableStateFlow<List<Breed>>(emptyList())
     val breedPics = _breedPics.asStateFlow()
+
+    private val _isAdded = MutableStateFlow<Boolean>(false)
+    val isAdded = _isAdded.asStateFlow()
 
     fun getBreedPics(){
         viewModelScope.launch {
@@ -41,6 +44,7 @@ class BreedImagesViewModel(val breedPic: BreedPic, db: FavoritesDatabase) : View
                     subBreedName = breedPic.subBreedName,
                     breedName = breedPic.breedName
                 ))
+                _isAdded.value = true
                 println("Added ${breedPic.breedImageUrl} to Favorites")
             } else {
                 repo.removeFromFavorites(Breed(
@@ -48,6 +52,7 @@ class BreedImagesViewModel(val breedPic: BreedPic, db: FavoritesDatabase) : View
                     breedName = breedPic.breedName,
                     subBreedName = breedPic.subBreedName
                 ))
+                _isAdded.value = false
                 println("Removed ${breedPic.breedImageUrl} from Favorites")
             }
         }

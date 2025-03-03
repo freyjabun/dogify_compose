@@ -1,5 +1,6 @@
 package com.example.dogify.breeds.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -36,10 +39,12 @@ import kotlinx.serialization.Serializable
 fun BreedPics(vm: BreedImagesViewModel) {
 
     val breedPics by vm.breedPics.collectAsState()
+    val isAdded by vm.isAdded.collectAsState()
 
     LaunchedEffect(vm) {
         vm.getBreedPics()
     }
+    val context = LocalContext.current
 
     val onClickFavorite: (Breed) -> Unit = {
         vm.toggleFavorite(it)
@@ -55,7 +60,8 @@ fun BreedPics(vm: BreedImagesViewModel) {
         items(breedPics) { item ->
             BreedPicItem(
                 breed = item,
-                onClickFavorite
+                onClickFavorite = onClickFavorite,
+                isAdded = isAdded
             )
         }
     }
@@ -65,8 +71,9 @@ fun BreedPics(vm: BreedImagesViewModel) {
 @Composable
 fun BreedPicItem(
     breed: Breed,
-    onClickFavorite: (Breed) -> Unit
-) {
+    isAdded: Boolean,
+    onClickFavorite: (Breed) -> Unit){
+    val context = LocalContext.current
     Card {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -86,8 +93,14 @@ fun BreedPicItem(
                 )
                 FloatingActionButton(onClick = {
                     onClickFavorite(breed)
+                    val message = if (!isAdded){
+                        "Added to favorites!"
+                    } else {
+                        "Removed from favorites."
+                    }
+                    Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
                 }) {
-                    Icon(imageVector = Icons.Outlined.FavoriteBorder,
+                    Icon(imageVector = Icons.Filled.Favorite,
                         contentDescription = "")
                 }
             }

@@ -41,6 +41,7 @@ fun BreedList(navController: NavController) {
 
     LaunchedEffect(Unit) {
         viewModel.loadAllBreeds()
+
     }
 
     val breedList = viewModel.breedList.collectAsState().value

@@ -8,7 +8,7 @@ import com.example.dogify.utils.DogBreedService
 import com.example.dogify.utils.FavoritesDAO
 import retrofit2.create
 
-class BreedPictureRepository(private val dao: FavoritesDAO) {
+class BreedImageRepository(private val dao: FavoritesDAO) {
 
     private val dogBreedImageService = DataFetchService.getInstance().create<DogBreedService>()
 
