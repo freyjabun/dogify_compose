@@ -21,3 +21,7 @@ fun Favorite.toModel(): Breed{
         breedImageUrl = breedImage
     )
 }
+
+fun Breed.toFullBreedString(): String{
+    return "$breedName-$subBreedName"
+}

@@ -75,7 +75,7 @@ fun BreedPicItem(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(){
+            Box{
                 GlideImage(
                     modifier = Modifier
                         .fillMaxSize()
@@ -87,42 +87,14 @@ fun BreedPicItem(
                     failure = placeholder(R.drawable.placeholder_dog),
                     contentScale = ContentScale.Crop,
                 )
-
                 FloatingActionButton(onClick = {
                     onClickFavorite(breed)
                 }) {
                     Icon(imageVector = Icons.Outlined.FavoriteBorder,
                         contentDescription = "")
                 }
-
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-            val breedLabel = if (breed.subBreedName.isNullOrEmpty()) {
-                breed.breedName
-            } else {
-                breed.breedName + " " + breed.subBreedName
-            }
-//            Row (horizontalArrangement = Arrangement.spacedBy(40.dp)
-//            , verticalAlignment = Alignment.CenterVertically){
-//                Text(
-//                    text = breedLabel,
-//                    fontSize = 25.sp
-//                )
-//                Button(onClick = {
-//                    onClickFavorite(breedPicEntry)
-//                },
-//
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Outlined.FavoriteBorder,
-//                        contentDescription = "Favorites Button Icon"
-//                    )
-//                }
-//            }
-
         }
-
     }
 }
 

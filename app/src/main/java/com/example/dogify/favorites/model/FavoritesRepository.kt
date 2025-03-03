@@ -17,47 +17,58 @@ class FavoritesRepository(private val dao: FavoritesDAO)  {
         return favorites
     }
 
-    suspend fun getListOfBreedsInFavorites(){
-        //TODO
-        dao.getAllBreedNamesInFavorites()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getListOfBreedsInFavorites(): Flow<List<Breed>> {
+        val breeds = dao.getAllBreedNamesInFavorites().mapLatest { it ->
+            it.map {
+                val parts = it.split("-")
+                val breedName = parts[0]
+                val subBreedName = parts[1]
+                Breed(breedName = breedName, subBreedName = subBreedName)
+            }
+        }
+        return breeds
     }
 
-    suspend fun getFavoritesByBreed(entry: Breed){
-        //TODO
-        dao.getFavoritesByBreed(
-            breedName = mergeBreedNames(entry)
-        )
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun getFavoritesByBreed(breed: Breed) : Flow<List<Breed>>{
+        val mappedBreed = breed.toFullBreedString()
+        val favoritesByBreed = dao.getFavoritesByBreed(mappedBreed).mapLatest {  it ->
+            it.map { it.toModel() }
+        }
+        return favoritesByBreed
     }
+
     suspend fun isImageInFavorites(breedImage: String): Boolean {
         return dao.isImageInFavorites(
             url = breedImage
         )
     }
 
-    private fun mergeBreedNames(entry: Breed): String {
-        return entry.breedName + "-" +
-                if (entry.subBreedName.isNullOrEmpty()) {
+    private fun mergeBreedNames(breed: Breed): String {
+        return breed.breedName + "-" +
+                if (breed.subBreedName.isNullOrEmpty()) {
                     ""
                 } else {
-                    entry.subBreedName
+                    breed.subBreedName
                 }
     }
 
-    suspend fun addToFavorites(entry: Breed) {
+    suspend fun addToFavorites(breed: Breed) {
         dao.addBreedPicToFavorites(
             Favorite(
-                breedImage = entry.breedImageUrl,
-                fullBreedName = mergeBreedNames(entry)
+                breedImage = breed.breedImageUrl,
+                fullBreedName = mergeBreedNames(breed)
             )
 
         )
     }
 
-    suspend fun removeFromFavorites(entry: Breed) {
+    suspend fun removeFromFavorites(breed: Breed) {
         dao.removeBreedPicFromFavorites(
             Favorite(
-                breedImage = entry.breedImageUrl,
-                fullBreedName = mergeBreedNames(entry)
+                breedImage = breed.breedImageUrl,
+                fullBreedName = mergeBreedNames(breed)
             )
         )
     }

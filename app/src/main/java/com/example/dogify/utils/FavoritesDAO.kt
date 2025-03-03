@@ -20,9 +20,9 @@ interface FavoritesDAO {
     @Query("SELECT * FROM favorite ORDER BY fullBreedName")
     fun getFavorites(): Flow<List<Favorite>>
 
-    @Query("SELECT DISTINCT fullBreedName from favorite ORDER BY fullBreedName DESC")
+    @Query("SELECT DISTINCT fullBreedName from favorite ORDER BY fullBreedName ASC")
     fun getAllBreedNamesInFavorites(): Flow<List<String>>
 
-    @Query("SELECT * FROM favorite WHERE fullBreedName like :breedName")
+    @Query("SELECT * FROM favorite WHERE fullBreedName = :breedName")
     fun getFavoritesByBreed(breedName:String): Flow<List<Favorite>>
 }
