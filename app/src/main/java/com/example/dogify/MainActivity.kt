@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DogifyTheme {
                 val navController = rememberNavController()
-                val configuration = LocalConfiguration.current
+                //val configuration = LocalConfiguration.current
                 var selectedItemIndex by rememberSaveable {
                     mutableIntStateOf(0)
                 }
