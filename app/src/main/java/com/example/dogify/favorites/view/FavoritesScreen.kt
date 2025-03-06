@@ -161,9 +161,11 @@ fun BreedDropdown(
         onExpandedChange = { expanded = !expanded },
         modifier = Modifier.padding(16.dp)
     ) {
-        // Display the selected breed, or default to "Select Breed"
+        val breedLabel = if (selectedBreed?.subBreedName.isNullOrEmpty()){
+            selectedBreed?.breedName
+        } else selectedBreed?.breedName + " " + selectedBreed?.subBreedName
         TextField(
-            value = selectedBreed?.breedName ?: "Select Breed",
+            value = breedLabel ?: "Select Breed",
             onValueChange = {},
             readOnly = true,
             label = { Text("Breed") },

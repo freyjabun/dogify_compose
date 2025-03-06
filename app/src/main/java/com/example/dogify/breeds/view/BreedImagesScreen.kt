@@ -72,14 +72,15 @@ fun BreedPics(vm: BreedImagesViewModel) {
 fun BreedPicItem(
     breed: Breed,
     isAdded: Boolean,
-    onClickFavorite: (Breed) -> Unit){
+    onClickFavorite: (Breed) -> Unit
+) {
     val context = LocalContext.current
     Card {
         Column(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box{
+            Box {
                 GlideImage(
                     modifier = Modifier
                         .fillMaxSize()
@@ -93,15 +94,17 @@ fun BreedPicItem(
                 )
                 FloatingActionButton(onClick = {
                     onClickFavorite(breed)
-                    val message = if (!isAdded){
+                    val message = if (!isAdded) {
                         "Added to favorites!"
                     } else {
                         "Removed from favorites."
                     }
-                    Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }) {
-                    Icon(imageVector = Icons.Filled.Favorite,
-                        contentDescription = "")
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = ""
+                    )
                 }
             }
         }

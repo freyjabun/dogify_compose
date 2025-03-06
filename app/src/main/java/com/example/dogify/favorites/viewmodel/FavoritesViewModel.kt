@@ -36,9 +36,9 @@ class FavoritesViewModel(db: FavoritesDatabase) : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
     val filteredFavoritesFlow: StateFlow<List<Breed>> =
         selectedBreed
-            .flatMapLatest {
-                selectedBreed -> favoriteFlow.map { favorites ->
-                    if (selectedBreed != null){
+            .flatMapLatest { selectedBreed ->
+                favoriteFlow.map { favorites ->
+                    if (selectedBreed != null) {
                         favorites.filter { breed -> breed.breedName == selectedBreed.breedName }
                     } else {
                         favorites

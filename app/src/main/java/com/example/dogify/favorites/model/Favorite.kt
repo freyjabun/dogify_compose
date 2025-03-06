@@ -10,7 +10,7 @@ data class Favorite(
     val fullBreedName: String
 )
 
-fun Favorite.toModel(): Breed{
+fun Favorite.toModel(): Breed {
     val parts = fullBreedName.split("-", limit = 2)
     val breedName = parts[0]
     val subBreedName = parts[1]

@@ -17,7 +17,7 @@ class BreedImagesViewModel(val breedPic: BreedPic, db: FavoritesDatabase) : View
     private val _breedPics = MutableStateFlow<List<Breed>>(emptyList())
     val breedPics = _breedPics.asStateFlow()
 
-    private val _isAdded = MutableStateFlow<Boolean>(false)
+    private val _isAdded = MutableStateFlow(false)
     val isAdded = _isAdded.asStateFlow()
 
     fun getBreedPics(){
