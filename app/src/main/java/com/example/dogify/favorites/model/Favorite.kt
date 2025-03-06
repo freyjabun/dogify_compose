@@ -21,3 +21,7 @@ fun Favorite.toModel(): Breed{
         breedImageUrl = breedImage
     )
 }
+
+fun Breed?.toMergedBreedName(): String{
+    return "${this?.breedName}-${this?.subBreedName}"
+}

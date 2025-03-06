@@ -50,7 +50,7 @@ fun Favorites(vm: FavoritesViewModel) {
         vm.toggleFavorite(it)
     }
 
-    val favorites by vm.filteredFavoritesFlow.collectAsState()
+    val favorites by vm.showFavoritesFlow.collectAsState()
     val breedsInFavorites by vm.allBreedsFlow.collectAsState()
 
     Box(
@@ -80,7 +80,7 @@ fun Favorites(vm: FavoritesViewModel) {
                 }
             } else {
                 LazyColumn(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(horizontal = 5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -103,7 +103,8 @@ fun FavoritesItem(
     onClickFavorite: (Breed) -> Unit
 ) {
     Card {
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
             Box {
                 GlideImage(
                     modifier = Modifier
@@ -139,7 +140,8 @@ fun FavoritesItem(
             }
             Text(
                 text = breedLabel,
-                fontSize = 25.sp
+                fontSize = 25.sp,
+                textAlign = TextAlign.Center
             )
         }
     }
