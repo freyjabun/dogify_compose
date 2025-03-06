@@ -21,33 +21,19 @@ class FavoritesViewModel(db: FavoritesDatabase) : ViewModel() {
     private val _selectedBreed = MutableStateFlow<Breed?>(null)
     private val selectedBreed = _selectedBreed.asStateFlow()
 
-
     val allBreedsFlow: StateFlow<List<Breed>> = repo.getListOfBreedsInFavorites().stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
         initialValue = emptyList()
     )
 
-    private val favoriteFlow: StateFlow<List<Breed>> = repo.getFavorites().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = emptyList()
-    )
-
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val favoritesByBreedFlow: StateFlow<List<Breed>> = selectedBreed.flatMapLatest {
-        selectedBreed -> repo.getFavoritesByBreed(selectedBreed)
-    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
-
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val showFavoritesFlow: StateFlow<List<Breed>> =
-        selectedBreed.flatMapLatest {
-            if (selectedBreed.value != null) {
-                favoritesByBreedFlow
+    val favoritesFlow: StateFlow<List<Breed>> =
+        selectedBreed.flatMapLatest {selectedBreed ->
+            if (selectedBreed != null) {
+                repo.getFavoritesByBreed(selectedBreed)
             } else {
-                favoriteFlow
+                repo.getFavorites()
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 

@@ -50,7 +50,7 @@ fun Favorites(vm: FavoritesViewModel) {
         vm.toggleFavorite(it)
     }
 
-    val favorites by vm.showFavoritesFlow.collectAsState()
+    val favorites by vm.favoritesFlow.collectAsState()
     val breedsInFavorites by vm.allBreedsFlow.collectAsState()
 
     Box(
