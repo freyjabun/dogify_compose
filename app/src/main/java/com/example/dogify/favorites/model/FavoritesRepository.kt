@@ -20,7 +20,6 @@ class FavoritesRepository(private val dao: FavoritesDAO) {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getFavoritesByBreed(breed: Breed?) : Flow<List<Breed>>{
             val fullBreedName = breed.toMergedBreedName()
-            println("Passed to dao: $fullBreedName")
             val favoritesByBreed = dao.getFavoritesByBreedName(fullBreedName).mapLatest { it ->
                 it.map { it.toModel() }
             }
