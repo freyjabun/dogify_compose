@@ -35,7 +35,7 @@ class FavoritesViewModel(db: FavoritesDatabase) : ViewModel() {
             } else {
                 repo.getFavorites()
             }
-        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun toggleFavorite(breed: Breed) {
         viewModelScope.launch {
