@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,7 +43,6 @@ fun BreedPics(vm: BreedImagesViewModel) {
     LaunchedEffect(vm) {
         vm.getBreedPics()
     }
-    val context = LocalContext.current
 
     val onClickFavorite: (Breed) -> Unit = {
         vm.toggleFavorite(it)
