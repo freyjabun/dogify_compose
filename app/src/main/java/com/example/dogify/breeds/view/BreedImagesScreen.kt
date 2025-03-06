@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,7 +43,6 @@ fun BreedPics(vm: BreedImagesViewModel) {
     LaunchedEffect(vm) {
         vm.getBreedPics()
     }
-    val context = LocalContext.current
 
     val onClickFavorite: (Breed) -> Unit = {
         vm.toggleFavorite(it)
@@ -72,14 +70,15 @@ fun BreedPics(vm: BreedImagesViewModel) {
 fun BreedPicItem(
     breed: Breed,
     isAdded: Boolean,
-    onClickFavorite: (Breed) -> Unit){
+    onClickFavorite: (Breed) -> Unit
+) {
     val context = LocalContext.current
     Card {
         Column(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box{
+            Box {
                 GlideImage(
                     modifier = Modifier
                         .fillMaxSize()
@@ -93,15 +92,17 @@ fun BreedPicItem(
                 )
                 FloatingActionButton(onClick = {
                     onClickFavorite(breed)
-                    val message = if (!isAdded){
+                    val message = if (!isAdded) {
                         "Added to favorites!"
                     } else {
                         "Removed from favorites."
                     }
-                    Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 }) {
-                    Icon(imageVector = Icons.Filled.Favorite,
-                        contentDescription = "")
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = ""
+                    )
                 }
             }
         }

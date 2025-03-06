@@ -39,6 +39,8 @@ class FavoritesViewModel(db: FavoritesDatabase) : ViewModel() {
         selectedBreed -> repo.getFavoritesByBreed(selectedBreed)
     }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
+
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val showFavoritesFlow: StateFlow<List<Breed>> =
         selectedBreed.flatMapLatest {
