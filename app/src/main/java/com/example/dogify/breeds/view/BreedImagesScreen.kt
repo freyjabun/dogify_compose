@@ -35,17 +35,17 @@ import kotlinx.serialization.Serializable
 
 
 @Composable
-fun BreedPics(vm: BreedImagesViewModel) {
+fun BreedPics(viewModel: BreedImagesViewModel) {
 
-    val breedPics by vm.breedPics.collectAsState()
-    val isAdded by vm.isAdded.collectAsState()
+    val breedPics by viewModel.breedPics.collectAsState()
+    val isAdded by viewModel.isAdded.collectAsState()
 
-    LaunchedEffect(vm) {
-        vm.getBreedPics()
+    LaunchedEffect(viewModel) {
+        viewModel.getBreedPics()
     }
 
     val onClickFavorite: (Breed) -> Unit = {
-        vm.toggleFavorite(it)
+        viewModel.toggleFavorite(it)
     }
 
     LazyColumn(

@@ -19,7 +19,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -28,11 +27,15 @@ import com.example.dogify.breeds.view.BreedList
 import com.example.dogify.breeds.view.BreedPic
 import com.example.dogify.breeds.view.BreedPics
 import com.example.dogify.breeds.viewmodel.BreedImagesViewModel
+import com.example.dogify.breeds.viewmodel.BreedListViewModel
 import com.example.dogify.favorites.view.Favorites
 import com.example.dogify.favorites.viewmodel.FavoritesViewModel
 import com.example.dogify.nav.navItems
 import com.example.dogify.ui.theme.DogifyTheme
 import com.example.dogify.utils.FavoritesDatabase
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
 
@@ -94,25 +97,19 @@ class MainActivity : ComponentActivity() {
                     ){
                         composable<BreedList>
                         {
-                            BreedList(navController)
+                            val vm = getViewModel<BreedListViewModel>()
+                            BreedList(navController, vm)
                         }
                         composable<BreedPic>
                         {
                             val breedPic: BreedPic = it.toRoute<BreedPic>()
-                            val breedPicVM = viewModel<BreedImagesViewModel>{
-                                BreedImagesViewModel(
-                                breedPic = breedPic,
-                                db = roomDb)
-                            }
-
-                            BreedPics(breedPicVM)
+                            val viewModel: BreedImagesViewModel by viewModel{ parametersOf(breedPic) }
+                            BreedPics(viewModel)
                         }
                         composable<Favorites>
                         {
-                            val favoriteVM = viewModel<FavoritesViewModel>{FavoritesViewModel(
-                                db = roomDb,
-                            )}
-                            Favorites(favoriteVM)
+                            val vm = getViewModel<FavoritesViewModel>()
+                            Favorites(vm)
                         }
                     }
                 }

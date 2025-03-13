@@ -35,9 +35,7 @@ import com.example.dogify.breeds.viewmodel.BreedListViewModel
 import kotlinx.serialization.Serializable
 
 @Composable
-fun BreedList(navController: NavController) {
-
-    val viewModel = viewModel<BreedListViewModel>()
+fun BreedList(navController: NavController, viewModel: BreedListViewModel) {
 
     LaunchedEffect(Unit) {
         viewModel.loadAllBreeds()

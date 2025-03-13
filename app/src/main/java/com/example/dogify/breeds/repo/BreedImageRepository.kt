@@ -8,23 +8,26 @@ import com.example.dogify.utils.DogBreedService
 import com.example.dogify.utils.FavoritesDAO
 import retrofit2.create
 
-class BreedImageRepository(private val dao: FavoritesDAO) {
+class BreedImageRepository(private val dao: FavoritesDAO, private val api: DogBreedService) :
+    BreedImageRepositoryInterface {
 
-    private val dogBreedImageService = DataFetchService.getInstance().create<DogBreedService>()
 
-    suspend fun getPicturesByBreed(breedName: String, subBreedName: String?): BreedImageResponse {
+    override suspend fun getPicturesByBreed(
+        breedName: String,
+        subBreedName: String?
+    ): BreedImageResponse {
         return if (subBreedName.isNullOrEmpty()) {
-            dogBreedImageService.getPicturesByBreed(
+            api.getPicturesByBreed(
                 breedName
             )
         } else {
-            dogBreedImageService.getPicturesBySubBreed(
+            api.getPicturesBySubBreed(
                 breedName, subBreedName
             )
         }
     }
 
-    suspend fun isImageInFavorites(breedImage: String): Boolean {
+    override suspend fun isImageInFavorites(breedImage: String): Boolean {
         return dao.isImageInFavorites(
             url = breedImage
         )
@@ -39,7 +42,7 @@ class BreedImageRepository(private val dao: FavoritesDAO) {
                 }
     }
 
-    suspend fun addToFavorites(entry: Breed) {
+    override suspend fun addToFavorites(entry: Breed) {
         dao.addBreedPicToFavorites(
             Favorite(
                 breedImage = entry.breedImageUrl,
@@ -49,7 +52,7 @@ class BreedImageRepository(private val dao: FavoritesDAO) {
         )
     }
 
-    suspend fun removeFromFavorites(entry: Breed) {
+    override suspend fun removeFromFavorites(entry: Breed) {
         dao.removeBreedPicFromFavorites(
             Favorite(
                 breedImage = entry.breedImageUrl,

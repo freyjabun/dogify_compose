@@ -3,14 +3,13 @@ package com.example.dogify.breeds.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dogify.breeds.model.Breed
-import com.example.dogify.breeds.repo.BreedRepository
+import com.example.dogify.breeds.repo.BreedRepositoryInterface
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class BreedListViewModel : ViewModel() {
-    private val breedRepo = BreedRepository()
+class BreedListViewModel(private val breedRepo: BreedRepositoryInterface) : ViewModel() {
 
     private val _breedList = MutableStateFlow<List<Breed>>(emptyList())
     val breedList = _breedList.asStateFlow()

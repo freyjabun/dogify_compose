@@ -6,11 +6,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 
-class FavoritesRepository(private val dao: FavoritesDAO) {
+class FavoritesRepository(private val dao: FavoritesDAO) :FavoritesRepositoryInterface {
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getFavorites(): Flow<List<Breed>> {
+    override fun getFavorites(): Flow<List<Breed>> {
         val favorites = dao.getFavorites().mapLatest { it ->
             it.map { it.toModel() }
         }
@@ -18,7 +18,7 @@ class FavoritesRepository(private val dao: FavoritesDAO) {
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun getListOfBreedsInFavorites(): Flow<List<Breed>> {
+    override fun getListOfBreedsInFavorites(): Flow<List<Breed>> {
         val breeds = dao.getAllBreedNamesInFavorites().mapLatest { it ->
             it.map {
                 val parts = it.split("-")
@@ -30,7 +30,7 @@ class FavoritesRepository(private val dao: FavoritesDAO) {
         return breeds
     }
 
-    suspend fun isImageInFavorites(breedImage: String): Boolean {
+    override suspend fun isImageInFavorites(breedImage: String): Boolean {
         return dao.isImageInFavorites(
             url = breedImage
         )
@@ -45,7 +45,7 @@ class FavoritesRepository(private val dao: FavoritesDAO) {
                 }
     }
 
-    suspend fun addToFavorites(breed: Breed) {
+    override suspend fun addToFavorites(breed: Breed) {
         dao.addBreedPicToFavorites(
             Favorite(
                 breedImage = breed.breedImageUrl,
@@ -55,7 +55,7 @@ class FavoritesRepository(private val dao: FavoritesDAO) {
         )
     }
 
-    suspend fun removeFromFavorites(breed: Breed) {
+    override suspend fun removeFromFavorites(breed: Breed) {
         dao.removeBreedPicFromFavorites(
             Favorite(
                 breedImage = breed.breedImageUrl,

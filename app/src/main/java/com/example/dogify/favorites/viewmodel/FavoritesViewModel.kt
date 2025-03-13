@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dogify.breeds.model.Breed
 import com.example.dogify.favorites.model.FavoritesRepository
+import com.example.dogify.favorites.model.FavoritesRepositoryInterface
 import com.example.dogify.utils.FavoritesDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(db: FavoritesDatabase) : ViewModel() {
-
-    private val repo = FavoritesRepository(db.dao)
+class FavoritesViewModel(private val repo: FavoritesRepositoryInterface) : ViewModel() {
 
     private val _selectedBreed = MutableStateFlow<Breed?>(null)
     private val selectedBreed: StateFlow<Breed?> = _selectedBreed
@@ -79,5 +78,6 @@ class FavoritesViewModel(db: FavoritesDatabase) : ViewModel() {
     fun clearBreedFilter() {
         _selectedBreed.value = null // Clear the breed filter, show full list
     }
+
 
 }

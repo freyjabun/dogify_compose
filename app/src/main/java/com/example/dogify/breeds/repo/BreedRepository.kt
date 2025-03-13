@@ -6,19 +6,18 @@ import com.example.dogify.utils.DataFetchService
 import com.example.dogify.utils.DogBreedService
 import retrofit2.create
 
-class BreedRepository {
+class BreedRepository (private val api : DogBreedService) : BreedRepositoryInterface{
 
-    private val dogBreedService = DataFetchService.getInstance().create<DogBreedService>()
 
-    suspend fun getAllBreeds(): BreedsResponse {
-        return dogBreedService.getAllBreeds()
+    override suspend fun getAllBreeds(): BreedsResponse {
+        return api.getAllBreeds()
     }
 
-    suspend fun getImageOfBreed(breedName: String, subBreedName: String?): RandomImageResponse {
+    override suspend fun getImageOfBreed(breedName: String, subBreedName: String?): RandomImageResponse {
         return if (subBreedName.isNullOrEmpty()) {
-            dogBreedService.getRandomPictureOfBreed(breedName)
+            api.getRandomPictureOfBreed(breedName)
         } else {
-            dogBreedService.getRandomPictureOfBreedWithSubBreed(breedName, subBreedName)
+            api.getRandomPictureOfBreedWithSubBreed(breedName, subBreedName)
         }
     }
 }
