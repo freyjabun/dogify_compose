@@ -46,4 +46,15 @@ We expect your app to have three screens with following features:
 
 ## 📝 Notes for reviewers
 
-Please add a video/GIF or some screenshots of your solution, and anything else you would want the reviewers to know before diving into the code.
+Implementation details:
+- Navigation is implemented using Compose Navigation
+- There is a PR open for the implementation of dependency injection using KOIN
+- Favorites are handled using the Room library
+
+The start destination is the Breeds tab, a 2-column grid showing each breed available from the API.
+Each card in the grid is clickable, resulting in navigation to a details page for that specific breed, which includes a favorites button (Heart icon).
+The heart icon is clickable and results in the image being added to the list of favorites.
+
+Navigating to the favorites view is done with the bottomNavBar, and this page shows a list of all the favorites added.
+The list is sortable in the top bar, where clicking on a breed in the drop-down results in only that breed being shown, and clicking show all favorites returns the list to the default state.
+This is done by observing the Room database as flows.
