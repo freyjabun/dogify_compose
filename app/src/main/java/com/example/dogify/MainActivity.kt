@@ -14,6 +14,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -35,10 +36,13 @@ import com.example.dogify.ui.theme.DogifyTheme
 import com.example.dogify.utils.FavoritesDatabase
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
 
+    @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -103,8 +107,8 @@ class MainActivity : ComponentActivity() {
                         composable<BreedPic>
                         {
                             val breedPic: BreedPic = it.toRoute<BreedPic>()
-                            val viewModel: BreedImagesViewModel by viewModel{ parametersOf(breedPic) }
-                            BreedPics(viewModel)
+                            val vm = koinViewModel<BreedImagesViewModel>(key = breedPic.hashCode().toString(),parameters = {parametersOf(breedPic)})
+                            BreedPics(vm)
                         }
                         composable<Favorites>
                         {

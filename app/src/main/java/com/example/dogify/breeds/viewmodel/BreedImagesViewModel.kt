@@ -3,19 +3,16 @@ package com.example.dogify.breeds.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dogify.breeds.model.Breed
-import com.example.dogify.breeds.repo.BreedImageRepository
 import com.example.dogify.breeds.repo.BreedImageRepositoryInterface
 import com.example.dogify.breeds.view.BreedPic
-import com.example.dogify.utils.FavoritesDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BreedImagesViewModel(
-    val breedPic: BreedPic,
+    private val breedPic: BreedPic,
     private val repo: BreedImageRepositoryInterface
 ) : ViewModel() {
-
 
     private val _breedPics = MutableStateFlow<List<Breed>>(emptyList())
     val breedPics = _breedPics.asStateFlow()
@@ -26,6 +23,7 @@ class BreedImagesViewModel(
     fun getBreedPics() {
         viewModelScope.launch {
             val response = repo.getPicturesByBreed(breedPic.breedName, breedPic.subBreedName)
+            println("Getting pictures of: ${breedPic.breedName}")
             val breedPicEntries = response.message.map { imageUrl ->
                 Breed(
                     breedName = breedPic.breedName,

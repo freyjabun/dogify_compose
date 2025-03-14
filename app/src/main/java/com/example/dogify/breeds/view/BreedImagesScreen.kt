@@ -35,7 +35,7 @@ import kotlinx.serialization.Serializable
 
 
 @Composable
-fun BreedPics(viewModel: BreedImagesViewModel) {
+fun BreedPics(viewModel: BreedImagesViewModel, ) {
 
     val breedPics by viewModel.breedPics.collectAsState()
     val isAdded by viewModel.isAdded.collectAsState()
